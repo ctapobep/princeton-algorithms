@@ -5,31 +5,39 @@ class WeighedQuickUnionFind implements UnionFind {
     int[] sizes
 
     WeighedQuickUnionFind(int size) {
-        this.array = (0..size).collect { it }
-        this.sizes = new int[size]
-        Arrays.fill(sizes, 1)
+        this.array = (0..size).toArray([])
+        this.sizes = [1] * size
     }
 
-    private WeighedQuickUnionFind(int[] array, int[] sizes) {
+    WeighedQuickUnionFind(int[] array, int[] sizes) {
         this.array = array
+        if (!sizes) {
+            sizes = new int[array.length]
+            Arrays.fill(sizes, 1)
+        }
         this.sizes = sizes
     }
 
     @Override
     WeighedQuickUnionFind union(int p, int q) {
+        assert p < array.length
+        assert q < array.length
         if (p == q) {
             return this
         }
         int pRoot = root(p)
         int qRoot = root(q)
-        if (sizes[pRoot] > sizes[qRoot]) {
+        if (pRoot == qRoot) {
+            return this;
+        }
+        if (sizes[pRoot] < sizes[qRoot]) {
             array[pRoot] = qRoot
-            sizes[pRoot] += sizes[qRoot]
+            sizes[qRoot] += sizes[pRoot]
         } else {
             array[qRoot] = pRoot
-            sizes[qRoot] += sizes[pRoot]
+            sizes[pRoot] += sizes[qRoot]
         }
-        return new WeighedQuickUnionFind(this.array)
+        return new WeighedQuickUnionFind(this.array, this.sizes)
     }
 
     @Override

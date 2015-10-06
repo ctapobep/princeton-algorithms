@@ -6,12 +6,14 @@ class QuickUnionFind implements UnionFind {
     QuickUnionFind(int size) {
         this.array = (0..size).collect{it}
     }
-    private QuickUnionFind(int[] array) {
+    QuickUnionFind(int[] array) {
         this.array = array;
     }
 
     @Override
     QuickUnionFind union(int p, int q) {
+        assert p < this.array.size()
+        assert q < this.array.size()
         if(p == q) {
             return this
         }
