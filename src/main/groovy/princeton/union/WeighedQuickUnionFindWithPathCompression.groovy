@@ -4,34 +4,33 @@ package princeton.union
  * Though instead of pointing directly to the root (for that we'd need additional loop) we can point to the grand parent
  * and half the tree depth.
  */
-class WeighedQuickUnionFindWithPathCompression implements UnionFind {
-    int[] array
-    int[] sizes
-
+class WeighedQuickUnionFindWithPathCompression extends WeighedQuickUnionFind {
     WeighedQuickUnionFindWithPathCompression(int size) {
-        this.array = (0..size).collect { it }
-        this.sizes = new int[size]
-        Arrays.fill(sizes, 1)
+        super(size)
     }
 
     private WeighedQuickUnionFindWithPathCompression(int[] array, int[] sizes) {
-        this.array = array
-        this.sizes = sizes
+        super(array, sizes)
     }
 
     @Override
     WeighedQuickUnionFindWithPathCompression union(int p, int q) {
+        assert p < array.length
+        assert q < array.length
         if (p == q) {
             return this
         }
         int pRoot = root(p)
         int qRoot = root(q)
-        if (sizes[pRoot] > sizes[qRoot]) {
+        if (pRoot == qRoot) {
+            return this;
+        }
+        if (sizes[pRoot] < sizes[qRoot]) {
             array[pRoot] = qRoot
-            sizes[pRoot] += sizes[qRoot]
+            sizes[qRoot] += sizes[pRoot]
         } else {
             array[qRoot] = pRoot
-            sizes[qRoot] += sizes[pRoot]
+            sizes[pRoot] += sizes[qRoot]
         }
         return new WeighedQuickUnionFindWithPathCompression(this.array)
     }
@@ -50,7 +49,4 @@ class WeighedQuickUnionFindWithPathCompression implements UnionFind {
         }
         index
     }
-
-    @Override
-    int size() { return array.size() }
 }

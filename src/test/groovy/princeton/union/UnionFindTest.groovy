@@ -7,6 +7,7 @@ import static princeton.union.UnionFindProperties.isIdempotent
 import static princeton.union.UnionFindProperties.isReflexive
 import static princeton.union.UnionFindProperties.isSymmetric
 import static princeton.union.UnionFindProperties.isTransitive
+import static princeton.union.UnionFindProperties.sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees
 
 class UnionFindTest extends Specification {
 
@@ -55,6 +56,7 @@ class UnionFindTest extends Specification {
           isSymmetric(unionFind)
           isTransitive(unionFind)
           isIdempotent(unionFind)
+          sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees(unionFind)
     }
 
     def 'weighed quick union with path compression'() {
@@ -69,5 +71,6 @@ class UnionFindTest extends Specification {
           isSymmetric(unionFind)
           isTransitive(unionFind)
           isIdempotent(unionFind)
+          sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees(unionFind)
     }
 }

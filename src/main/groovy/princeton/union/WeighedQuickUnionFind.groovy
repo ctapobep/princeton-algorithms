@@ -5,8 +5,7 @@ class WeighedQuickUnionFind implements UnionFind {
     int[] sizes
 
     WeighedQuickUnionFind(int size) {
-        this.array = (0..size).toArray([])
-        this.sizes = [1] * size
+        this((0..(size-1)).toArray([]) as int[], [1] * size as int[])
     }
 
     WeighedQuickUnionFind(int[] array, int[] sizes) {
@@ -16,6 +15,7 @@ class WeighedQuickUnionFind implements UnionFind {
             Arrays.fill(sizes, 1)
         }
         this.sizes = sizes
+        assert this.sizes.length == this.array.length
     }
 
     @Override
