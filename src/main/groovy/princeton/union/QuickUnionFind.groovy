@@ -4,7 +4,7 @@ class QuickUnionFind implements UnionFind {
     int[] array
 
     QuickUnionFind(int size) {
-        this.array = (0..size).collect{it}
+        this.array = (0..(size - 1)).collect{it}
     }
     QuickUnionFind(int[] array) {
         this.array = array;

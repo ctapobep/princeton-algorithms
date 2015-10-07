@@ -13,26 +13,23 @@ class UnionFindTest extends Specification {
 
     def 'Quick Union Example'() {
         setup:
-          def sut = new QuickUnionFind((0..9).toArray() as int[])
-          for (int[] pair : unions) {
-              sut.union(pair[0], pair[1])
-          }
+          def sut = connectPairs(new QuickUnionFind(10), pairs)
         expect:
           sut.array == expectedResult as int[]
         where:
-          unions                                           | expectedResult
+          pairs                                            | expectedResult
           [[9, 4], [2, 4], [3, 5], [1, 2], [8, 1], [0, 3]] | [3, 2, 4, 5, 4, 5, 6, 7, 1, 4]
           [[3, 7], [6, 7], [0, 9], [2, 4], [8, 7], [6, 5]] | [9, 1, 4, 7, 4, 5, 7, 5, 7, 9]
     }
 
     def 'Weighed Quick Union Example'() {
-        given:
-          def unionFind = new WeighedQuickUnionFind((0..9).toArray() as int[])
-        when:
-          def union = unionFind.union(8, 1).union(4, 3).union(6, 2).union(4, 5).union(7, 9)
-                  .union(5, 8).union(7, 2).union(6, 5).union(8, 0)
-        then:
-          union.array == [4, 8, 6, 4, 4, 4, 7, 4, 4, 7] as int[]
+        setup:
+          def sut = connectPairs(new WeighedQuickUnionFind(10), pairs)
+        expect:
+          sut.array == expectedResult as int[]
+        where:
+          pairs                                                                    | expectedResult
+          [[8, 1], [4, 3], [6, 2], [4, 5], [7, 9], [5, 8], [7, 2], [6, 5], [8, 0]] | [4, 8, 6, 4, 4, 4, 7, 4, 4, 7]
     }
 
     def 'quick union'() {
@@ -77,5 +74,13 @@ class UnionFindTest extends Specification {
           isTransitive(unionFind)
           isIdempotent(unionFind)
           sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees(unionFind)
+    }
+
+    private static <T extends UnionFind> T connectPairs(T unionFind, List<List<Integer>> pairs) {
+        UnionFind result = unionFind
+        for (int[] pair : pairs) {
+            result = result.union(pair[0], pair[1])
+        }
+        return unionFind
     }
 }
