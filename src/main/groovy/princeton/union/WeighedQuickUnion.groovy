@@ -1,14 +1,14 @@
 package princeton.union
 
-class WeighedQuickUnionFind implements UnionFind {
+class WeighedQuickUnion implements UnionFind {
     int[] array
     int[] sizes
 
-    WeighedQuickUnionFind(int size) {
+    WeighedQuickUnion(int size) {
         this((0..(size-1)).toArray([]) as int[], [1] * size as int[])
     }
 
-    WeighedQuickUnionFind(int[] array, int[] sizes) {
+    WeighedQuickUnion(int[] array, int[] sizes) {
         this.array = array
         if (!sizes) {
             sizes = new int[array.length]
@@ -19,7 +19,7 @@ class WeighedQuickUnionFind implements UnionFind {
     }
 
     @Override
-    WeighedQuickUnionFind union(int p, int q) {
+    WeighedQuickUnion union(int p, int q) {
         assert p < array.length
         assert q < array.length
         if (p == q) {
@@ -37,7 +37,7 @@ class WeighedQuickUnionFind implements UnionFind {
             array[qRoot] = pRoot
             sizes[pRoot] += sizes[qRoot]
         }
-        return new WeighedQuickUnionFind(this.array, this.sizes)
+        return new WeighedQuickUnion(this.array, this.sizes)
     }
 
     @Override

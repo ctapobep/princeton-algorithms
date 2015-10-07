@@ -1,7 +1,5 @@
 package princeton.union
 
-import org.apache.commons.lang3.RandomUtils
-
 import static org.apache.commons.lang3.RandomUtils.nextInt
 
 class UnionFindProperties {
@@ -40,7 +38,7 @@ class UnionFindProperties {
      * larger (at least 2 times) comparing to the sub-tree.
      *
      **/
-    static boolean sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees(WeighedQuickUnionFind unionFind) {
+    static boolean sizeOfParentIsTwiceAsLargeAsAnyOfItsSubTrees(WeighedQuickUnion unionFind) {
         def size = unionFind.size()
         (0..nextInt(0, 1000)).each {
             unionFind.union(nextInt(0, size), nextInt(0, size))

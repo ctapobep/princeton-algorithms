@@ -4,17 +4,17 @@ package princeton.union
  * Though instead of pointing directly to the root (for that we'd need additional loop) we can point to the grand parent
  * and half the tree depth.
  */
-class WeighedQuickUnionFindWithPathCompression extends WeighedQuickUnionFind {
-    WeighedQuickUnionFindWithPathCompression(int size) {
+class WeighedQuickUnionWithPathCompression extends WeighedQuickUnion {
+    WeighedQuickUnionWithPathCompression(int size) {
         super(size)
     }
 
-    private WeighedQuickUnionFindWithPathCompression(int[] array, int[] sizes) {
+    private WeighedQuickUnionWithPathCompression(int[] array, int[] sizes) {
         super(array, sizes)
     }
 
     @Override
-    WeighedQuickUnionFindWithPathCompression union(int p, int q) {
+    WeighedQuickUnionWithPathCompression union(int p, int q) {
         assert p < array.length
         assert q < array.length
         if (p == q) {
@@ -32,7 +32,7 @@ class WeighedQuickUnionFindWithPathCompression extends WeighedQuickUnionFind {
             array[qRoot] = pRoot
             sizes[pRoot] += sizes[qRoot]
         }
-        return new WeighedQuickUnionFindWithPathCompression(this.array)
+        return new WeighedQuickUnionWithPathCompression(this.array)
     }
 
     @Override

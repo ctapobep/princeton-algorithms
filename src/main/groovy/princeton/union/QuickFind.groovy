@@ -1,28 +1,30 @@
 package princeton.union
 
-class EagerUnionFind implements UnionFind {
+class QuickFind implements UnionFind {
     final int[] array
 
-    EagerUnionFind(int size) {
-        this.array = (0..size).collect { it }
+    QuickFind(int size) {
+        this.array = (0..(size-1)).toArray() as int[]
     }
-    private EagerUnionFind(int[] array) {
+    private QuickFind(int[] array) {
         this.array = array
     }
 
     @Override
-    EagerUnionFind union(int p, int q) {
+    QuickFind union(int p, int q) {
+        assert p < this.array.length
+        assert q < this.array.length
         int pValue = array[p]
         int qValue = array[q]
         if (pValue == qValue) {
             return this
         }
         for (int i = 0; i < array.size(); i++) {
-            if (array[i] == qValue) {
-                array[i] = pValue
+            if (array[i] == pValue) {
+                array[i] = qValue
             }
         }
-        return new EagerUnionFind(this.array)
+        return new QuickFind(this.array)
     }
 
     @Override
@@ -31,5 +33,5 @@ class EagerUnionFind implements UnionFind {
     }
 
     @Override
-    int size() { this.array.size() }
+    int size() { this.array.length }
 }

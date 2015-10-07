@@ -11,30 +11,43 @@ import static princeton.union.UnionFindProperties.sizeOfParentIsTwiceAsLargeAsAn
 
 class UnionFindTest extends Specification {
 
-    def 'Quick Union Example'() {
+    def 'Quick Find Example'() {
         setup:
-          def sut = connectPairs(new QuickUnionFind(10), pairs)
+          def sut = connectPairs(new QuickFind(10), pairs)
         expect:
           sut.array == expectedResult as int[]
         where:
           pairs                                            | expectedResult
-          [[9, 4], [2, 4], [3, 5], [1, 2], [8, 1], [0, 3]] | [3, 2, 4, 5, 4, 5, 6, 7, 1, 4]
-          [[3, 7], [6, 7], [0, 9], [2, 4], [8, 7], [6, 5]] | [9, 1, 4, 7, 4, 5, 7, 5, 7, 9]
+          [[3, 7], [6, 7], [0, 9], [2, 4], [8, 7], [6, 5]] | [9, 1, 4, 5, 4, 5, 5, 5, 5, 9]
+          [[9, 4], [2, 4], [3, 5], [1, 2], [8, 1], [0, 3]] | [5, 4, 4, 5, 4, 5, 6, 7, 4, 4]
+          [[1, 8], [4, 3], [9, 8], [2, 9], [1, 0], [5, 3]] | [0, 0, 0, 3, 3, 3, 6, 7, 0, 0]
+    }
+
+    def 'Quick Union Example'() {
+        setup:
+          def sut = connectPairs(new QuickUnion(10), pairs)
+        expect:
+          sut.array == expectedResult as int[]
+        where:
+          pairs    | expectedResult
+          [[0, 0]] | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
 
     def 'Weighed Quick Union Example'() {
         setup:
-          def sut = connectPairs(new WeighedQuickUnionFind(10), pairs)
+          def sut = connectPairs(new WeighedQuickUnion(10), pairs)
         expect:
           sut.array == expectedResult as int[]
         where:
           pairs                                                                    | expectedResult
           [[8, 1], [4, 3], [6, 2], [4, 5], [7, 9], [5, 8], [7, 2], [6, 5], [8, 0]] | [4, 8, 6, 4, 4, 4, 7, 4, 4, 7]
+          [[0, 2], [0, 9], [3, 8], [5, 1], [7, 0], [7, 6], [8, 5], [6, 5], [4, 7]] | [0, 5, 0, 0, 0, 3, 0, 0, 3, 0]
+          [[7, 0], [3, 8], [9, 2], [6, 0], [2, 3], [7, 4], [7, 1], [7, 8], [3, 5]] | [7, 7, 9, 9, 7, 7, 7, 7, 3, 7]
     }
 
     def 'quick union'() {
         given:
-          def unionFind = new QuickUnionFind(nextInt(1, 1000))
+          def unionFind = new QuickUnion(nextInt(0, 1000))
           def q = nextInt(0, unionFind.size() - 1)
           def p = nextInt(0, unionFind.size() - 1)
         when:
@@ -48,7 +61,7 @@ class UnionFindTest extends Specification {
 
     def 'weighed quick union'() {
         given:
-          def unionFind = new WeighedQuickUnionFind(nextInt(1, 1000))
+          def unionFind = new WeighedQuickUnion(nextInt(0, 1000))
           def q = nextInt(0, unionFind.size() - 1)
           def p = nextInt(0, unionFind.size() - 1)
         when:
@@ -63,7 +76,7 @@ class UnionFindTest extends Specification {
 
     def 'weighed quick union with path compression'() {
         given:
-          def unionFind = new WeighedQuickUnionFindWithPathCompression(nextInt(1, 1000))
+          def unionFind = new WeighedQuickUnionWithPathCompression(nextInt(0, 1000))
           def q = nextInt(0, unionFind.size() - 1)
           def p = nextInt(0, unionFind.size() - 1)
         when:

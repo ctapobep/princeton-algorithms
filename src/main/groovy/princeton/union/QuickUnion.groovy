@@ -1,25 +1,26 @@
 package princeton.union
 
-class QuickUnionFind implements UnionFind {
+class QuickUnion implements UnionFind {
     int[] array
 
-    QuickUnionFind(int size) {
-        this.array = (0..(size - 1)).collect{it}
+    QuickUnion(int size) {
+        this.array = (0..(size - 1)).toArray() as int[]
     }
-    QuickUnionFind(int[] array) {
+
+    QuickUnion(int[] array) {
         this.array = array;
     }
 
     @Override
-    QuickUnionFind union(int p, int q) {
-        assert p < this.array.size()
-        assert q < this.array.size()
+    QuickUnion union(int p, int q) {
+        assert p < this.array.length
+        assert q < this.array.length
         if(p == q) {
             return this
         }
-        int index = root(p)
-        array[index] = q
-        return new QuickUnionFind(this.array)
+        int pRoot = root(p)
+        array[pRoot] = root(q)
+        return new QuickUnion(this.array)
     }
 
     @Override
@@ -33,7 +34,7 @@ class QuickUnionFind implements UnionFind {
         while (index != array[index]) {
             index = array[index]
         }
-        index
+        return index
     }
 
     @Override
