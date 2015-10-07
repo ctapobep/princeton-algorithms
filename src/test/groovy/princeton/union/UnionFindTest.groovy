@@ -12,12 +12,17 @@ import static princeton.union.UnionFindProperties.sizeOfParentIsTwiceAsLargeAsAn
 class UnionFindTest extends Specification {
 
     def 'Quick Union Example'() {
-        given:
-          def unionFind = new QuickUnionFind((0..9).toArray() as int[])
-        when:
-          def union = unionFind.union(9, 4).union(2, 4).union(3, 5).union(1, 2).union(8, 1).union(0, 3)
-        then:
-          union.array == [3, 2, 4, 5, 4, 5, 6, 7, 1, 4] as int[]
+        setup:
+          def sut = new QuickUnionFind((0..9).toArray() as int[])
+          for (int[] pair : unions) {
+              sut.union(pair[0], pair[1])
+          }
+        expect:
+          sut.array == expectedResult as int[]
+        where:
+          unions                                           | expectedResult
+          [[9, 4], [2, 4], [3, 5], [1, 2], [8, 1], [0, 3]] | [3, 2, 4, 5, 4, 5, 6, 7, 1, 4]
+          [[3, 7], [6, 7], [0, 9], [2, 4], [8, 7], [6, 5]] | [9, 1, 4, 7, 4, 5, 7, 5, 7, 9]
     }
 
     def 'Weighed Quick Union Example'() {
